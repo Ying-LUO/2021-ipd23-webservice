@@ -9,6 +9,7 @@
   "author": "Ying LUO",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.17.1",
     "save": "^2.4.0"
   }
 }
