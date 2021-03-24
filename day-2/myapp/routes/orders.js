@@ -1,20 +1,78 @@
 var express = require('express');
 var router = express.Router();
 
-const orders = [{orderId: 1, item:"apple", qty: 7},{orderId:2, item:"pear", qty:5}, {orderId:3, item:"grape", qty:4}];
+let orders = [
+  {
+    id: 1,
+    productName: "Reebok shoes",
+    price: 200,
+    color: "black",
+    quantity: 200
+  },
+  {
+    id: 2,
+    productName: "sports t shirt",
+    price: 100,
+    color: "blue",
+    quantity: 100
+  }
+];
 
-/* GET orders listing. */
-router.get('/', function(req, res, next) {
-  //res.send('respond with a resource');
-  //res.send({orders:orders});
-  res.json({orders:orders});  // use for send back json format to client
-});
-
-/* POST order */
-router.post('/', function(req, res){
-  orders.push(req.body);
-  console.log(req.body); // get body part of request
-  res.json({resp: "orders request recieved"});
-});
+// single resource
+  // - get api to get one order by id
+  router.get('/:orderId', function(req, res, next) {
+    console.log(req.params);
+    const foundIndex = orders.findIndex(o=>o.id == req.params.orderId);
+    if(foundIndex >= 0){
+      res.send({orders:orders[foundIndex]});
+    }else{
+      res.json({resp: "order not found"});
+    }
+  });
+  // - put api to edit one order by id
+  router.put('/:orderId', function (req, res) {
+    console.log(req.params);
+    const foundIndex = orders.findIndex(o=>o.id == req.params.orderId)
+    if(foundIndex >= 0){
+      orders[foundIndex] = req.body;
+      res.json({orders:orders});
+    }else{
+      res.json({resp: "order not found"});
+    }
+  });
+  // - delete apit to delete one order by id
+  router.delete('/:orderId', function (req, res) {
+    console.log(req.params);
+    const foundIndex = orders.findIndex(o=>o.id == req.params.orderId)
+    if(foundIndex >= 0){
+      orders.splice(foundIndex, 1); 
+      res.json({orders:orders});
+    }else{
+      res.json({resp: "order not found"});
+    }
+  });
+  // - post api to create a new order
+  router.post('/', function(req, res){
+    console.log(req.body);
+    orders.push(req.body);
+    res.json({resp: "orders request recieved"});
+  });
+  
+// All resources
+  // - get api to fetch all the orders
+  router.get('/', function(req, res, next) {
+    res.json({orders:orders}); 
+  });
+  // - put api to edit all the orders
+  router.put('/', function (req, res) {
+  console.log(req.body);
+  orders = req.body.orders;
+  res.json({orders:orders});
+  });
+  // - delete api to delete all orders 
+  router.delete('/', function (req, res) {
+    orders.length = 0;
+    res.json({orders:orders});
+  });
 
 module.exports = router;

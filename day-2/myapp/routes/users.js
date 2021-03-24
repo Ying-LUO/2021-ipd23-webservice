@@ -1,10 +1,17 @@
 var express = require('express');
 var router = express.Router();
 
-const users = [{name: "superman", age: 777},{name:"catwoman", age:35}, {name:"batman", age:40}];
+//not const
+let users = [{name: "superman", age: 777},{name:"catwoman", age:35}, {name:"batman", age:40}];
   
 /* GET users listing. */
 router.get('/', function(req, res, next) {
+  //res.send('respond with a resource');
+  res.send({users:users});
+  //res.json({users:users});  // use for send back json format to client
+});
+
+router.get('/:name', function(req, res, next) {
   //res.send('respond with a resource');
   res.send({users:users});
   //res.json({users:users});  // use for send back json format to client
@@ -19,18 +26,45 @@ router.post('/', function(req, res){
   res.json({resp: "request recieved"});
 });
 
+// all fileds required for update
+router.put('/:name', function (req, res) {
+  const foundIndex = users.findIndex(a=>a.name === req.params.name)
+  if(foundIndex >= 0){
+    users[foundIndex] = req.body;
+    res.json({users:users});
+  }else{
+    res.json({resp: "user not found"});
+  }
+})
+
+// partial fileds required
+router.patch('/:name', function (req, res) {
+  const foundIndex = users.findIndex(a=>a.name === req.params.name)
+  if(foundIndex >= 0){
+    if(req.body.name){
+      users[foundIndex].name = req.body.name;
+    }
+    if(req.body.age){
+      users[foundIndex].age = req.body.age;
+    }
+    res.json({users:users});
+  }else{
+    res.json({resp: "user not found"});
+  }
+})
+
 router.put('/', function (req, res) {
   //way 1
-  // users = req.body.users;
-  // res.json({users:users});
+  users = req.body.users;
+  res.json({users:users});
 
   //way 2
-  users.length = 0;  // use to erase all the element in arrays
-  req.body.users.forEach(element => {
-    users.push(element);
-  });
-  console.log(req.body); 
-  res.json({resp: "put request recieved"});
+  // users.length = 0;  // use to erase all the element in arrays
+  // req.body.users.forEach(element => {
+  //   users.push(element);
+  // });
+  // console.log(req.body); 
+  // res.json({resp: "put request recieved"});
 })
 
 router.delete('/', function (req, res) {
@@ -43,16 +77,16 @@ router.delete('/', function (req, res) {
 
 router.delete('/:name', function (req, res) {
   console.log(req.params);
-  // users = users.filter(a => a.name!==req.params.name);
-  // res.json({users:users});
-  const foundIndex = users.findIndex(a=>a.name === req.params.name);
-  if(foundIndex >= 0){
-    users.splice(foundIndex, 1);
-    res.json({users:users});
-  }else{
-    res.json({resp: "user not found"});
-  }
+  users = users.filter(a => a.name!==req.params.name);
+  res.json({users:users});
+  // const foundIndex = users.findIndex(a=>a.name === req.params.name);
+  // if(foundIndex >= 0){
+  //   users.splice(foundIndex, 1);  // 1 means only delete 1 element
+  //   res.json({users:users});
+  // }else{
+  //   res.json({resp: "user not found"});
+  // }
 })
 
-
+// Write an API to fetch one specific user by name
 module.exports = router;
