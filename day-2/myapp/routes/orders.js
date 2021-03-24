@@ -55,8 +55,31 @@ let orders = [
   router.post('/', function(req, res){
     console.log(req.body);
     orders.push(req.body);
-    res.json({resp: "orders request recieved"});
+    res.json({orders:orders});
   });
+  // - patch api to edit specific field of order by id
+  router.patch('/:orderId', function (req, res) {
+    console.log(req.params);
+    const foundIndex = orders.findIndex(o=>o.id == req.params.orderId)
+    if(foundIndex >= 0){
+      if(req.body.productName){
+        orders[foundIndex].productName = req.body.productName;
+      }
+      if(req.body.price){
+        orders[foundIndex].price = req.body.price;
+      }
+      if(req.body.color){
+        orders[foundIndex].color = req.body.color;
+      }
+      if(req.body.quantity){
+        orders[foundIndex].quantity = req.body.quantity;
+      }
+      res.json({orders:orders});
+    }else{
+      res.json({resp: "order not found"});
+    }
+  })
+
   
 // All resources
   // - get api to fetch all the orders
