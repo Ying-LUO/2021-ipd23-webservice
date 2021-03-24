@@ -1,0 +1,40 @@
+1. New terminal under new folder, e.g. day-3
+2. move to directory under day-3, run: npm init
+3. enter information about name/author/etc...
+4. automatically generate package.json under day-3 folder
+5. run: npm install -g express-generator
+ or
+   run: npm install express-generator
+ to install express generator
+6. automatically generate folder: node_modules
+7. run: npx express testapp --no-view
+8. automatically generate folder: testapp which contains:
+	subfolder: bin/public/routes
+	files:app.js/package.json
+9. open package.json to confirm "scripts" has "start": "node ./nbin/www" inside to lauch app
+10.update app.js to add new router:
+	var ordersRouter = require('./routes/orders');
+	app.use('/orders', ordersRouter);
+11.add orders.js under /routes to control GET/POST renders
+12.move to directory testapp under day-3, run: npm install to install dependencies defined in package.json
+13.run npm start to lauch the server
+14.run npm install -g nodemon
+15.run nodemon bin/www  so that you don't need to restart server manually, it will auto-restart by changes under the folder
+
+if meet problem like:
+	PS D:\JohnAbbottCollege\WebServiceJS\day-2\myapp> nodemon bin/www
+	nodemon : File C:\Users\ewuzhou\AppData\Roaming\npm\nodemon.ps1 cannot be loaded. The file 
+	C:\Users\ewuzhou\AppData\Roaming\npm\nodemon.ps1 is not digitally signed. You cannot run this script on the current system. For more       
+	information about running scripts and setting execution policy, see about_Execution_Policies at 
+	https:/go.microsoft.com/fwlink/?LinkID=135170.
+	At line:1 char:1
+	+ nodemon bin/www
+	+ ~~~~~~~
+    	+ CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    	+ FullyQualifiedErrorId : UnauthorizedAccess
+
+run command below:
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
+	or 
+	powershell run as adminstrator
+16.
