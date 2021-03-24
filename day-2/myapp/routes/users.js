@@ -11,10 +11,14 @@ router.get('/', function(req, res, next) {
   //res.json({users:users});  // use for send back json format to client
 });
 
+// Write an api to fetch one specific user by name - get api
 router.get('/:name', function(req, res, next) {
-  //res.send('respond with a resource');
-  res.send({users:users});
-  //res.json({users:users});  // use for send back json format to client
+  const foundIndex = users.findIndex(a=>a.name === req.params.name)
+  if(foundIndex >= 0){
+    res.json({users:users[foundIndex]});
+  }else{
+    res.json({resp: "user not found"});
+  }
 });
 
 /* POST user */
@@ -27,6 +31,7 @@ router.post('/', function(req, res){
 });
 
 // all fileds required for update
+// Write an api to edit one specific user by name - put api
 router.put('/:name', function (req, res) {
   const foundIndex = users.findIndex(a=>a.name === req.params.name)
   if(foundIndex >= 0){
