@@ -9,4 +9,11 @@ router.get('/', function(req, res, next) {
   res.json({users:users});  // use for send back json format to client
 });
 
+/* POST user */
+router.post('/', function(req, res){
+  // log the request informations
+  console.log(req);
+  res.json({resp: "request recieved"});
+});
+
 module.exports = router;
