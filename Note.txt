@@ -6,7 +6,7 @@
  or
    run: npm install express-generator
  to install express generator
-6. automatically generate folder: node_modules
+6. automatically generate folder: node_modules, then run: express -h
 7. run: npx express testapp --no-view
 8. automatically generate folder: testapp which contains:
 	subfolder: bin/public/routes
@@ -37,4 +37,21 @@ run command below:
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
 	or 
 	powershell run as adminstrator
-16.
+16.DB connection
+run: npm i mysql (i means install)
+
+_______________________________________________
+1.new folder, e.g. day04
+2.under day04, run:
+npm install -g express-generator
+then 
+express -h
+then 
+express --no-view dbapp
+3.move to dbapp
+4.run: 
+npm i mysql
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+
+flush privileges;
