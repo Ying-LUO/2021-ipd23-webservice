@@ -55,3 +55,7 @@ npm i mysql
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
 
 flush privileges;
+
+npm i -g http-server
+
+http-server -c-1

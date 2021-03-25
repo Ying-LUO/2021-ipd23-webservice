@@ -83,6 +83,7 @@ let orders = [
   
 // All resources
   // - get api to fetch all the orders
+  // next means next function, normally for error handling
   router.get('/', function(req, res, next) {
     res.json({orders:orders}); 
   });
