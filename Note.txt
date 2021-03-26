@@ -56,6 +56,12 @@ ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password
 
 flush privileges;
 
+npm i cors
+
 npm i -g http-server
 
 http-server -c-1
+
+Update in package.json -> "scripts", could add any script with self defined name, like: test/anyname with script command after
+npm run dev  --automatically restart server
+npm run start  --manually restart server
