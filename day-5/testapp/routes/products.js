@@ -8,6 +8,11 @@ function dateFormat(jsonDate) {
     return date.toLocaleDateString('en-CA', options);
   }
 
+function dayDifferent(expiryDate) {
+    let timeDifference = Math.abs(new Date(expiryDate).getTime() - new Date().getTime());
+    return Math.ceil(timeDifference / (1000 * 3600 * 24));
+}
+
 /* GET products list */
 router.get('/', function(req, res) {
   sql.query("SELECT * FROM products", (error, results, fields) => {
@@ -46,12 +51,8 @@ router.get('/sku_id/:sku_id', function(req, res) {
 /* INSERT one product */
 router.post('/', (req,res) => {
     console.log(req.body);
-    let expiryDate = new Date(req.body.expiry_date);
-    let timeDifference = Math.abs(expiryDate.getTime() - new Date().getTime());
-    let differentDays = Math.ceil(timeDifference / (1000 * 3600 * 24));
     const sqlString = `INSERT INTO products (sku_id, product_name, expiry_date, days_to_expire_from_today) 
-    VALUES ('${req.body.sku_id}', '${req.body.product_name}', '${req.body.expiry_date}', '${differentDays}')`;
-    
+    VALUES ('${req.body.sku_id}', '${req.body.product_name}', '${req.body.expiry_date}', '${dayDifferent(req.body.expiry_date)}')`;
     sql.query(sqlString, (error, results) => {
         if(error) throw error;
         res.json(results);
@@ -72,11 +73,8 @@ router.delete('/:id', function(req, res, next) {
 router.put('/:id', function(req, res) {
     console.log(req.params);
     console.log(req.body);
-    let expiryDate = new Date(req.body.expiry_date);
-    let timeDifference = Math.abs(expiryDate.getTime() - new Date().getTime());
-    let differentDays = Math.ceil(timeDifference / (1000 * 3600 * 24));
     sql.query('UPDATE products SET sku_id=?, product_name=?, expiry_date=?, days_to_expire_from_today=? WHERE id=?',
-            [req.body.sku_id, req.body.product_name, req.body.expiry_date, differentDays, req.params.id], 
+            [req.body.sku_id, req.body.product_name, req.body.expiry_date, dayDifferent(req.body.expiry_date), req.params.id], 
             function(error, results, fields){
                 if (error) throw error;
                   res.json(results);
