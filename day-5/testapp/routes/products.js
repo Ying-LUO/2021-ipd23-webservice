@@ -9,7 +9,8 @@ function dateFormat(jsonDate) {
   }
 
 function dayDifferent(expiryDate) {
-    let timeDifference = Math.abs(new Date(expiryDate).getTime() - new Date().getTime());
+    //let timeDifference = Math.abs(new Date(expiryDate).getTime() - new Date().getTime());
+    let timeDifference = new Date(expiryDate).getTime() - new Date().getTime();
     return Math.ceil(timeDifference / (1000 * 3600 * 24));
 }
 
@@ -19,6 +20,12 @@ router.get('/', function(req, res) {
     if(error) throw error;
     results.forEach(product => {
         product.expiry_date = dateFormat(product.expiry_date);
+        product.days_to_expire_from_today = dayDifferent(product.expiry_date);
+        sql.query('UPDATE products SET days_to_expire_from_today=? WHERE id=?',
+            [dayDifferent(product.expiry_date), product.id], 
+            function(error, results, fields){
+                if (error) throw error;
+         });
     });
     res.json(results);
   });
@@ -31,6 +38,12 @@ router.get('/:id', function(req, res) {
     if (error) throw error;
     results.forEach(product => {
         product.expiry_date = dateFormat(product.expiry_date);
+        product.days_to_expire_from_today = dayDifferent(product.expiry_date);
+        sql.query('UPDATE products SET days_to_expire_from_today=? WHERE id=?',
+            [dayDifferent(product.expiry_date), product.id], 
+            function(error, results, fields){
+                if (error) throw error;
+         });
         });
     res.json(results);
   });
@@ -43,6 +56,12 @@ router.get('/sku_id/:sku_id', function(req, res) {
     if (error) throw error;
     results.forEach(product => {
         product.expiry_date = dateFormat(product.expiry_date);
+        product.days_to_expire_from_today = dayDifferent(product.expiry_date);
+        sql.query('UPDATE products SET days_to_expire_from_today=? WHERE id=?',
+            [dayDifferent(product.expiry_date), product.id], 
+            function(error, results, fields){
+                if (error) throw error;
+         });
         });
     res.json(results);
     });
