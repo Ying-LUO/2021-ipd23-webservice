@@ -65,3 +65,11 @@ http-server -c-1
 Update in package.json -> "scripts", could add any script with self defined name, like: test/anyname with script command after
 npm run dev  --automatically restart server
 npm run start  --manually restart server
+
+npm install crypto-random-string
+
+JOI Validation
+
+Middleware
+Query Params
+localhost:3000/heros?age>15
