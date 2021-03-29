@@ -3,13 +3,12 @@ var router = express.Router();
 const sql = require('../db');
 
 /* GET users listing. */
-router.get('/', function(req, res) {
-  // sql.query("select * from superheros", function(error, results, fields){
-  //   if(error) throw error;
-  //   res.json(results);
-  // });
-  // Same as above
-  sql.query("SELECT * FROM superheros", (error, results, fields) => {
+router.get('/', function(req, res, next) {
+  let sqlString = "SELECT * FROM superheros";
+  if(req.query && req.query.age){
+      sqlString += ` WHERE age = ${req.query.age}`;
+  }
+  sql.query(sqlString, (error, results, fields) => {
     if(error) throw error;
     res.json(results);
   });

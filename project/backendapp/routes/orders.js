@@ -1,6 +1,14 @@
 var express = require('express');
 var router = express.Router();
 const sql = require('../db');
+const Joi = require('joi');
+const validator = require('express-joi-validation').createValidator({});
+const querySchema = Joi.object({
+  //order_number: Joi.string().min(8).required(),
+  userId: Joi.number().min(0).required(),
+  productId: Joi.number().min(0).required(),
+  quantity: Joi.number().min(0).required()
+})
 
 const cryptoRandomString = require('crypto-random-string');
 
@@ -31,7 +39,8 @@ router.get('/order_number/:order_number', function(req, res) {
 });
 
 /* INSERT one order */
-router.post('/', (req,res) => {
+// validator.query() for GET instead of validator.body() for POST
+router.post('/', validator.body(querySchema), (req,res) => {
     console.log(req.body);
     let amount = 0;
     sql.query("SELECT * FROM products WHERE id=?",[req.body.productId], function(error, results, fields){

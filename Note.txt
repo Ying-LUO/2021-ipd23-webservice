@@ -69,7 +69,8 @@ npm run start  --manually restart server
 npm install crypto-random-string
 
 JOI Validation
-
+	npm i express-joi-validation joi --save
 Middleware
+	in router/orders.js -> change request handling to next() -> in app.js -> add next() function
 Query Params
 localhost:3000/heros?age>15

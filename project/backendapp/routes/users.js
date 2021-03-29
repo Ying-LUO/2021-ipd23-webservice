@@ -1,6 +1,13 @@
 var express = require('express');
 var router = express.Router();
 const sql = require('../db');
+const Joi = require('joi');
+const validator = require('express-joi-validation').createValidator({});
+const querySchema = Joi.object({
+  first_name: Joi.string().alphanum(),
+  last_name: Joi.string().alphanum(),
+  email: Joi.string().email()
+})
 
 /* GET users list */
 router.get('/', function(req, res) {
@@ -38,7 +45,7 @@ router.get('/email/:email', function(req, res) {
 });
 
 /* INSERT one user */
-router.post('/', (req,res) => {
+router.post('/', validator.body(querySchema), (req,res) => {
     console.log(req.body);
     const sqlString = `INSERT INTO users (first_name, last_name, email) 
     VALUES ('${req.body.first_name}', '${req.body.last_name}', '${req.body.email}')`;
