@@ -10,13 +10,15 @@ CREATE TABLE IF NOT EXISTS `users` (
  
 ALTER TABLE `users` ADD PRIMARY KEY (`id`);
 ALTER TABLE `users` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `users` MODIFY `email` VARCHAR(200) UNIQUE;
+ALTER TABLE `users` ADD `password` VARCHAR(15) NOT NULL AFTER `email`;
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`) VALUES
-(1, 'Peter', 'John', 'peter@test.com' ),
-(2, 'Andy', 'James', 'andy@test.com' ),
-(3, 'Mathew', 'Partner', 'mathew@test.com' ),
-(4, 'Robert', 'Windy', 'robert@test.com' ),
-(5, 'Mark', 'Teddy', 'mark@test.com' );
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`) VALUES
+(1, 'Peter', 'John', 'peter@test.com', 'test' ),
+(2, 'Andy', 'James', 'andy@test.com', 'test' ),
+(3, 'Mathew', 'Partner', 'mathew@test.com', 'test' ),
+(4, 'Robert', 'Windy', 'robert@test.com', 'test' ),
+(5, 'Mark', 'Teddy', 'mark@test.com', 'test' );
 
 CREATE TABLE IF NOT EXISTS `products` (
   `id` int(11) NOT NULL,
@@ -29,11 +31,12 @@ CREATE TABLE IF NOT EXISTS `products` (
  
 ALTER TABLE `products` ADD PRIMARY KEY (`id`);
 ALTER TABLE `products` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `products` ADD `category` ENUM('Grain','Vegetable','Fruit','Protein','Meet') DEFAULT 'Grain' AFTER `sku_id`;
 
-INSERT INTO `products` (`sku_id`, `product_name`, `price`, `expiry_date`, `days_to_expire_from_today`) VALUES
-('iy4169', 'Butter', 12.59, '2021-04-10', 15 ),
-('ek613', 'Whole grain bread', 3.99, '2021-04-15', 20 ),
-('pb016', 'Almond Milk', 6.49, '2021-04-18', 23);
+INSERT INTO `products` (`sku_id`, `category`,  `product_name`, `price`, `expiry_date`, `days_to_expire_from_today`) VALUES
+('iy4169', 'Protein', 'Butter', 12.59, '2021-04-10', 15 ),
+('ek613', 'Grain', 'Whole grain bread', 3.99, '2021-04-15', 20 ),
+('pb016', 'Protein', 'Almond Milk', 6.49, '2021-04-18', 23);
 
 CREATE TABLE IF NOT EXISTS `orders` (
   `id` int(11) NOT NULL,

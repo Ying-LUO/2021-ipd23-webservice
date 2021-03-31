@@ -1,4 +1,4 @@
-const DOMAIN = "localhost:3000";
+const DOMAIN = "http://localhost:3000";
 
 function listProduct(){
     $.ajax({

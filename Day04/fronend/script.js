@@ -1,9 +1,9 @@
-const DOMAIN = "http://localhost:3000";
+const DOMAIN = "https://dbappying.herokuapp.com";
 
 function getAndDisplayAllHeroes() {
     $.ajax({
         method: "GET",
-        url: `${DOMAIN}/heros`
+        url: `${DOMAIN}/superheros`
     }).done((resp) => {
         const heroContainerEl = document.getElementById("hero-container"); 
         heroContainerEl.innerHTML = "";
@@ -37,7 +37,7 @@ function addHero() {
     //alert(jsonString);
     $.ajax({
         method: "post",
-        url: `${DOMAIN}/heros`,
+        url: `${DOMAIN}/superheros`,
         dataType: "json",
         data: heroObj, // body of the request
     }).done((resp) => {
@@ -56,7 +56,7 @@ function findHero(){
     var id=parseInt($("input[name=id]").val());
        $.ajax({
         method: "Get",
-        url: `${DOMAIN}/heros/${id}`,
+        url: `${DOMAIN}/superheros/${id}`,
          }).done((resp) => {
 
        var result="";
@@ -83,7 +83,7 @@ function edithero(id){
     alert(heroObj);
     $.ajax({
         method: "put",
-        url: `${DOMAIN}/heros/${id}`,
+        url: `${DOMAIN}/superheros/${id}`,
         dataType: "json",
         data: heroObj,
     }).done((resp) => {
