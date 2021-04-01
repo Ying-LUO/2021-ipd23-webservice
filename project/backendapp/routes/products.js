@@ -8,6 +8,7 @@ const querySchema = Joi.object({
   sku_id: Joi.string().max(10).required(),
   product_name: Joi.string().min(3).required(),
   product_name: Joi.string().max(255).required(),
+  category: Joi.string().required(),
   expiry_date: Joi.string().required(),
   price: Joi.number().required()
 })
@@ -108,10 +109,18 @@ router.get('/product_name/:product_name', function(req, res) {
 /* INSERT one product */
 router.post('/', validator.body(querySchema), (req,res) => {
     console.log(req.body);
-    const sqlString = `INSERT INTO products (sku_id, product_name, price, expiry_date, days_to_expire_from_today) 
-    VALUES ('${req.body.sku_id}', '${req.body.product_name}', '${req.body.price}', '${req.body.expiry_date}', '${dayDifferent(req.body.expiry_date)}')`;
+    const sqlString = `INSERT INTO products (sku_id, category, product_name, price, expiry_date, days_to_expire_from_today) 
+    VALUES ('${req.body.sku_id}', '${req.body.category}', '${req.body.product_name}', '${req.body.price}', '${req.body.expiry_date}', '${dayDifferent(req.body.expiry_date)}')`;
     sql.query(sqlString, (error, results) => {
-        if(error) throw error;
+      if (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+          res.status(400).send({
+            message: "Product already exists. Please use another sku_id."
+          });
+          return;
+        }
+        next(error);
+      }
         res.json(results);
     });
 })

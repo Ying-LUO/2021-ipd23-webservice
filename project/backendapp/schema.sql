@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `products` (
  
 ALTER TABLE `products` ADD PRIMARY KEY (`id`);
 ALTER TABLE `products` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `products` MODIFY `sku_id` VARCHAR(20) UNIQUE;
 ALTER TABLE `products` ADD `category` ENUM('Grain','Vegetable','Fruit','Protein','Meet') DEFAULT 'Grain' AFTER `sku_id`;
 
 INSERT INTO `products` (`sku_id`, `category`,  `product_name`, `price`, `expiry_date`, `days_to_expire_from_today`) VALUES

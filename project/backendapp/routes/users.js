@@ -6,6 +6,7 @@ const validator = require('express-joi-validation').createValidator({});
 const querySchema = Joi.object({
   first_name: Joi.string().alphanum(),
   last_name: Joi.string().alphanum(),
+  password:Joi.string().min(3).required(),
   email: Joi.string().email()
 })
 
@@ -45,13 +46,21 @@ router.get('/email/:email', function(req, res) {
 });
 
 /* INSERT one user */
-router.post('/', validator.body(querySchema), (req,res) => {
+router.post('/', validator.body(querySchema), (req,res,next) => {
     console.log(req.body);
-    const sqlString = `INSERT INTO users (first_name, last_name, email) 
-    VALUES ('${req.body.first_name}', '${req.body.last_name}', '${req.body.email}')`;
+    const sqlString = `INSERT INTO users (first_name, last_name, password, email) 
+    VALUES ('${req.body.first_name}', '${req.body.last_name}', '${req.body.password}', '${req.body.email}')`;
     sql.query(sqlString, (error, results) => {
-        if(error) throw error;
-        res.json(results);
+      if (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+          res.status(400).send({
+            message: "User already exists. Please use another email."
+          });
+          return;
+        }
+        next(error);
+      }
+      res.json(results);
     });
 })
 

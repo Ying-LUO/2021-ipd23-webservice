@@ -6,13 +6,11 @@ var cors = require('cors');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var productsRouter = require('./routes/products');
-var ordersRouter = require('./routes/orders');
+var authorsRouter = require('./routes/authors');
+var booksRouter = require('./routes/books');
 
 var app = express();
 
-// middlewares in order
-// request will go from cors to logger then express json, and so on... to router
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
@@ -28,27 +26,27 @@ app.use((req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/products', productsRouter);
-app.use('/orders', ordersRouter);
+app.use('/authors', authorsRouter);
+app.use('/books', booksRouter);
 
-// Global/default Error handler 
 app.use((err, req, resp, next) => {
-    console.error(err);
-
-    // Check for joi errors
     if (err && err.error && err.error.isJoi) {
         resp.status(400).json({
             message: err.error.toString(),
             error: err.message
         });
     }
-    //  Other errors generated in the system
-    else {
-        resp.status(500).json({
-            message: "Something went wrong",
-            error: err.message
-        });
-    }
-})
+    else
+        throw err;
+});
+
+// Global/default Error handler 
+app.use((err, req, resp, next) => {
+    resp.status(500).json({
+        message: "Something went wrong",
+        error: err.message
+    });
+    return;
+});
 
 module.exports = app;
