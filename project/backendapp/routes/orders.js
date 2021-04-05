@@ -10,12 +10,21 @@ const querySchema = Joi.object({
   quantity: Joi.number().min(0).required()
 })
 
+function dateFormat(jsonDate) {
+  var date = new Date(jsonDate);
+  let options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return date.toLocaleDateString('en-CA', options);
+}
+
 const cryptoRandomString = require('crypto-random-string');
 
 /* GET orders list */
 router.get('/', function(req, res) {
   sql.query("SELECT * FROM orders", (error, results, fields) => {
     if(error) throw error;
+    results.forEach(order => {
+      order.ordered_at = dateFormat(order.ordered_at);
+  });
     res.json(results);
   });
 });

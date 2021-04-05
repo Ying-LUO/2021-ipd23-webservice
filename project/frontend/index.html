@@ -24,15 +24,19 @@
           <a class="nav-link" href="orders.html">Order</a>
         </li>
       </ul>
-      <form>
-        <div class="form-group mx-sm-3 mb-2">
+      <h2 id="currentUser"></h2>
+        <div class="form-group mx-sm-3 mb-2" id="loginForm">
             <label for="email" class="col-sm-2 col-form-label">Email</label>
             <div class="col-sm-8">
-              <input type="email" class="form-control" id="email" placeholder="Email">
+              <input type="email" class="form-control" name="email" id="loginEmail" placeholder="Email">
             </div>
-        </div>
-        <button type="submit" class="btn btn-primary mx-sm-4">Login</button>
-    </form>
+            <label for="password" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-8">
+              <input type="password" class="form-control" name="password" id="loginPWD" placeholder="Password">
+            </div>
+          <br>
+        <button id="getUser" onclick="getUser()" class="col-sm-2  btn btn-primary">Login</button>
+      </div>
       <script src="script.js"></script>
 </body>
 </html>

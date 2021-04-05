@@ -64,6 +64,12 @@ router.post('/', validator.body(querySchema), (req,res,next) => {
     });
 })
 
+/* SESSION user */
+router.post('/login', (req,res,next) => {
+  console.log(req.body);
+  req.session.user = req.body;
+})
+
 /* DELETE user by id */
 router.delete('/:id', function(req, res, next) {
   console.log(req.params);
